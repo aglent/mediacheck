@@ -28,7 +28,7 @@ const policy_name = "Netflix" //填入你的 netflix 策略组名
 
 const arrow = " ➟ "
 
-const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
 
 // 即将登陆
 const STATUS_COMING = 2

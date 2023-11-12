@@ -1,6 +1,6 @@
 #!/bin/bash
 
-UA_Browser="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
+UA_Browser="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
 DisneyCountryList='HK TW US JP SG AU TR CA CO NZ KR GB DE BR SE'
 netname=`ip a | grep  'WARP\|wgcf' | awk 'NR==1 {print $2}' | cut -d':' -f1`
 if cat /etc/XrayR/config.yml | grep -q 'RouteConfigPath' && cat /etc/XrayR/route.json | grep -B 1 'geosite:netflix' | grep -q 'IPv6'; then

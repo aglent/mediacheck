@@ -17,7 +17,7 @@ const DISNEY_LOCATION_BASE_URL = 'https://disney.api.edge.bamgrid.com/graph/v1/d
 const YTB_BASE_URL = "https://www.youtube.com/premium";
 const Dazn_BASE_URL = "https://startup.core.indazn.com/misl/v5/Startup";
 
-const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
 
 var inputParams = $environment.params;
 var nodeName = inputParams.node;
