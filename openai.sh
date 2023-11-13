@@ -35,7 +35,7 @@ else
    local_result3=$(curl -4 -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://chat.openai.com/public-api/conversation_limit" 2>&1)
    local_region=$(curl -4 -sS https://chat.openai.com/cdn-cgi/trace | grep "loc=" | awk -F= '{print $2}')
    # if [ -z "$local_result1" ] && [ -n "$local_result2" ] && [ "$local_result3" != "403" ]; then
-   if [ -z "$local_result1" ] && [ "$local_result3" != "403" ]; then
+   if [ -z "$local_result1" ] ; then
       echo -e "${GREEN}Your IP supports access to OpenAI. Region: ${local_region}${PLAIN}" 
    else
       echo -e "${RED}Your IP is BLOCKED!${PLAIN}"
@@ -57,7 +57,7 @@ else
    local_result3=$(curl -6 -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://chat.openai.com/public-api/conversation_limit" 2>&1)
    local_region=$(curl -6 -sS https://chat.openai.com/cdn-cgi/trace | grep "loc=" | awk -F= '{print $2}')
    # if [ -z "$local_result1" ] && [ -n "$local_result2" ] && [ "$local_result3" != "403" ]; then
-   if [ -z "$local_result1" ] && [ "$local_result3" != "403" ]; then
+   if [ -z "$local_result1" ] ; then
       echo -e "${GREEN}Your IP supports access to OpenAI. Region: ${local_region}${PLAIN}" 
    else
       echo -e "${RED}Your IP is BLOCKED!${PLAIN}"

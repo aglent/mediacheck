@@ -136,7 +136,7 @@ function Test_Openai() {
    local result3=$(curl $useNICAI -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://chat.openai.com/public-api/conversation_limit" 2>&1)
    local region=$(curl $useNICAI -sS https://chat.openai.com/cdn-cgi/trace | grep "loc=" | awk -F= '{print $2}')
    # if [ -z "$result1" ] && [ -n "$result2" ] && [ "$result3" != "403" ]; then
-   if [ -z "$result1" ] && [ "$result3" != "403" ]; then
+   if [ -z "$result1" ] ; then
       echo -n -e "\r OpenAI$useNICAI: $region \n"
    else
       echo -n -e "\r OpenAI$useNICAI: BLOCKED!"
