@@ -132,10 +132,11 @@ function Test_Google() {
 
 function Test_Openai() {
    local result1=$(curl $useNICAI -sS --max-time 10 "https://chat.openai.com/auth/login" | egrep 'you have been blocked|If you are using a VPN')
-   local result2=$(curl $useNICAI -sI --max-time 10 "https://chat.openai.com/auth/login" | grep 'HTTP/2 200')
+   # local result2=$(curl $useNICAI -sI --max-time 10 "https://chat.openai.com/auth/login" | grep 'HTTP/2 200')
    local result3=$(curl $useNICAI -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://chat.openai.com/public-api/conversation_limit" 2>&1)
    local region=$(curl $useNICAI -sS https://chat.openai.com/cdn-cgi/trace | grep "loc=" | awk -F= '{print $2}')
-   if [ -z "$result1" ] && [ -n "$result2" ] && [ "$result3" != "403" ]; then
+   # if [ -z "$result1" ] && [ -n "$result2" ] && [ "$result3" != "403" ]; then
+   if [ -z "$result1" ] && [ "$result3" != "403" ]; then
       echo -n -e "\r OpenAI$useNICAI: $region \n"
    else
       echo -n -e "\r OpenAI$useNICAI: BLOCKED!"
