@@ -85,7 +85,7 @@ function Test_Disney() {
       echo -n -e "\r Disney$useNICDS: $region2 \n"
       return;
    elif [ -n "$region2" ] && [[ "$inSupportedLocation" == "false" ]] && [ -z "$isUnabailable" ];then
-      echo -n -e "\r Disney$useNICDS: $region2 Available Soon \n"
+      echo -n -e "\r Disney$useNICDS: $region2 Soon \n"
       return;
    elif [ -n "$region2" ] && [ -n "$isUnabailable" ];then
       echo -n -e "\r Disney$useNICDS: No \n"
