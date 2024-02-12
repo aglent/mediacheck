@@ -33,19 +33,18 @@ else
 fi
 
 function Test_Netflix() {
-   local result1=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
-   local result2=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
-   if [[ "$result1" == "404" ]] && [[ "$result2" == "404" ]]; then
+   local tmpresult1=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
+   local tmpresult2=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
+   local result1=$(echo $tmpresult1 | grep -oP '"isPlayable":\K(true|false)')
+   local result2=$(echo $tmpresult2 | grep -oP '"isPlayable":\K(true|false)')
+   if [[ "$result1" == "false" ]] && [[ "$result2" == "false" ]]; then
       echo -n -e "\r Netflix$useNICNF: Originals Only \n"
-   elif [[ "$result1" == "403" ]] && [[ "$result2" == "403" ]]; then
+   elif [ -z "$result1" ] && [ -z "$result2" ]; then
       echo -n -e "\r Netflix$useNICNF: No \n"
-   elif [[ "$result1" == "200" ]] || [[ "$result2" == "200" ]]; then
-      local region1=`tr [:lower:] [:upper:] <<< $(curl $useNICNF --user-agent "${UA_Browser}" -fs --max-time 10 --write-out %{redirect_url} --output /dev/null "https://www.netflix.com/title/80018499" | cut -d '/' -f4 | cut -d '-' -f1)` ;
-      if [[ ! -n "$region1" ]];then
-         region1="US";
-      fi
+   elif [[ "$result1" == "true" ]] || [[ "$result2" == "true" ]]; then
+      local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"id":"\K\w\w' | head -n 1)
       echo -n -e "\r Netflix$useNICNF: $region1 \n"
-   elif  [[ "$result1" == "000" ]];then
+   else
       echo -n -e "\r Netflix$useNICNF: Failed (Network Connection) \n"
    fi
 }
@@ -142,9 +141,11 @@ function Test_Openai() {
 
 function Loop() {
    #Test_Netflix
-   local NF_result1=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
-   local NF_result2=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
-   if ! ([[ "$NF_result1" == "200" ]] || [[ "$NF_result2" == "200" ]]); then
+   local tmpresult1=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
+   local tmpresult2=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
+   local result1=$(echo $tmpresult1 | grep -oP '"isPlayable":\K(true|false)')
+   local result2=$(echo $tmpresult2 | grep -oP '"isPlayable":\K(true|false)')
+   if ! ([[ "$result1" == "true" ]] || [[ "$result2" == "true" ]]); then
       echo -n -e "\r Netflix$useNICNF失效.更新中 \n"
       for ((i=1; i<=30;i++))
       do
@@ -159,14 +160,13 @@ function Loop() {
 				sleep 2
 			fi
          #netflix check
-         local result3=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
-         local result4=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL --write-out %{http_code} --output /dev/null --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
-         if [[ "$result3" == "200" ]] || [[ "$result4" == "200" ]]; then   #netflix ok
+         local tmpresult3=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
+         local tmpresult4=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
+         local result3=$(echo $tmpresult1 | grep -oP '"isPlayable":\K(true|false)')
+         local result4=$(echo $tmpresult2 | grep -oP '"isPlayable":\K(true|false)')
+         if [[ "$result3" == "true" ]] || [[ "$result4" == "true" ]]; then   #netflix ok
             #netflix country
-            local region1=`tr [:lower:] [:upper:] <<< $(curl $useNICDS --user-agent "${UA_Browser}" -fs --max-time 10 --write-out %{redirect_url} --output /dev/null "https://www.netflix.com/title/80018499" | cut -d '/' -f4 | cut -d '-' -f1)` ;
-            if [[ ! -n "$region1" ]];then
-               region1="US";
-            fi
+            local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"id":"\K\w\w' | head -n 1)
             echo -n -e "\r 重新获取次数:${i} \n"
             echo -n -e "\r Netflix$useNICNF: $region1 \n"
             break;
@@ -177,10 +177,7 @@ function Loop() {
       done
    else
       #netflix country
-      local region1=`tr [:lower:] [:upper:] <<< $(curl $useNICNF --user-agent "${UA_Browser}" -fs --max-time 10 --write-out %{redirect_url} --output /dev/null "https://www.netflix.com/title/80018499" | cut -d '/' -f4 | cut -d '-' -f1)` ;
-      if [[ ! -n "$region1" ]];then
-         region1="US";
-      fi
+      local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"id":"\K\w\w' | head -n 1)
       echo -n -e "\r Netflix$useNICNF: $region1 \n"
    fi
 
