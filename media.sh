@@ -42,7 +42,7 @@ function Test_Netflix() {
    elif [ -z "$result1" ] && [ -z "$result2" ]; then
       echo -n -e "\r Netflix$useNICNF: No \n"
    elif [[ "$result1" == "true" ]] || [[ "$result2" == "true" ]]; then
-      local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"supportedLocales":\["en","zh"\],"id":"\K\w\w' | head -n 1)
+      local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"supportedLocales":\[".*",".*"\],"id":"\K\w\w' | head -n 1)
       echo -n -e "\r Netflix$useNICNF: $region1 \n"
    else
       echo -n -e "\r Netflix$useNICNF: Failed (Network Connection) \n"
@@ -166,7 +166,7 @@ function Loop() {
          local result4=$(echo $tmpresult2 | grep -oP '"isPlayable":\K(true|false)')
          if [[ "$result3" == "true" ]] || [[ "$result4" == "true" ]]; then   #netflix ok
             #netflix country
-            local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"supportedLocales":\["en","zh"\],"id":"\K\w\w' | head -n 1)
+            local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"supportedLocales":\[".*",".*"\],"id":"\K\w\w' | head -n 1)
             echo -n -e "\r 重新获取次数:${i} \n"
             echo -n -e "\r Netflix$useNICNF: $region1 \n"
             break;
@@ -177,7 +177,7 @@ function Loop() {
       done
    else
       #netflix country
-      local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"supportedLocales":\["en","zh"\],"id":"\K\w\w' | head -n 1)
+      local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{"supportedLocales":\[".*",".*"\],"id":"\K\w\w' | head -n 1)
       echo -n -e "\r Netflix$useNICNF: $region1 \n"
    fi
 
