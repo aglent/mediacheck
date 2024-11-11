@@ -115,16 +115,13 @@ function Test_Google() {
    local isNotAvailable=$(echo $GG_result | grep 'Premium is not available in your country')
    # local region=$(echo $GG_result | grep "countryCode" | sed 's/.*"countryCode"//' | cut -f2 -d'"')
    # local isAvailable=$(echo $GG_result | egrep '/month|/.month')
-   local region=$(echo GG_result | grep -woP '"INNERTUBE_CONTEXT_GL"\s{0,}:\s{0,}"\K[^"]+')
-   local isAvailable=$(echo GG_result | grep -i 'ad-free')
+   local region=$(echo $GG_result | grep -woP '"INNERTUBE_CONTEXT_GL"\s{0,}:\s{0,}"\K[^"]+')
+   # local isAvailable=$(echo $GG_result | grep -i 'ad-free')
    if [ -n "$isNotAvailable" ]; then
       echo -n -e "\r Google$useNICYB: No($region) \n"
       return
-   elif [ -n "$isAvailable" ] && [ -n "$region" ]; then
+   elif [ -n "$region" ]; then
       echo -n -e "\r Google$useNICYB: $region \n"
-      return
-   elif [ -z "$region" ] && [ -n "$isAvailable" ]; then
-      echo -n -e "\r Google$useNICYB: US \n"
       return
    else
       echo -n -e "\r Google$useNICYB: Failed \n"
@@ -210,19 +207,16 @@ function Loop() {
          if [[ "$GG_result2" != "curl"* ]]; then   #google ok
             #google country
             local isCN=$(echo $GG_result1 | grep 'www.google.cn')
-            local region=$(echo $GG_result2 | grep "countryCode" | sed 's/.*"countryCode"//' | cut -f2 -d'"')
-            local isAvailable=$(echo $GG_result2 | egrep '/month|/.month')
+            # local region=$(echo $GG_result2 | grep "countryCode" | sed 's/.*"countryCode"//' | cut -f2 -d'"')
+            local region=$(echo $GG_result2 | grep -woP '"INNERTUBE_CONTEXT_GL"\s{0,}:\s{0,}"\K[^"]+')
+
             if [ -n "$isCN" ]; then
                echo -n -e "\r 重新获取次数:${i} \n"
                echo -n -e "\r Google$useNICYB: No(CN) \n"
                break;
-            elif [ -n "$isAvailable" ] && [ -n "$region" ]; then
+            elif [ -n "$region" ]; then
                echo -n -e "\r 重新获取次数:${i} \n"
                echo -n -e "\r Google$useNICYB: $region \n"
-               break;
-            elif [ -z "$region" ] && [ -n "$isAvailable" ]; then
-               echo -n -e "\r 重新获取次数:${i} \n"
-               echo -n -e "\r Google$useNICYB: US \n"
                break;
             fi
          elif [[ "$i" == 30 ]];then
@@ -236,14 +230,11 @@ function Loop() {
          echo -n -e "\r Google$useNICYB: No(CN) \n"
       fi
       local isNotAvailable=$(echo $GG_result1 | grep 'Premium is not available in your country')
-      local region=$(echo $GG_result1 | grep "countryCode" | sed 's/.*"countryCode"//' | cut -f2 -d'"')
-      local isAvailable=$(echo $GG_result1 | egrep '/month|/.month')
+      local region=$(echo $GG_result1 | grep -woP '"INNERTUBE_CONTEXT_GL"\s{0,}:\s{0,}"\K[^"]+')
       if [ -n "$isNotAvailable" ]; then
          echo -n -e "\r Google$useNICYB: No($region) \n"
-      elif [ -n "$isAvailable" ] && [ -n "$region" ]; then
+      elif [ -n "$region" ]; then
          echo -n -e "\r Google$useNICYB: $region \n"
-      elif [ -z "$region" ] && [ -n "$isAvailable" ]; then
-         echo -n -e "\r Google$useNICYB: US \n"
       else
          echo -n -e "\r Google$useNICYB: Failed \n"
       fi
