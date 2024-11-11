@@ -1,6 +1,6 @@
 #!/bin/bash
 
-UA_Browser="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
+UA_Browser="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
 DisneyCountryList='HK TW US JP SG AU TR CA CO NZ KR GB DE BR SE'
 netname=`ip a | grep  'WARP\|wgcf' | awk 'NR==1 {print $2}' | cut -d':' -f1`
 if cat /etc/XrayR/config.yml | grep -q 'RouteConfigPath' && cat /etc/XrayR/route.json | grep -B 1 'geosite:netflix' | grep -q 'IPv6'; then
@@ -41,9 +41,12 @@ function Test_Netflix() {
       echo -n -e "\r Netflix$useNICNF: Originals Only \n"
    elif [ -z "$result1" ] && [ -z "$result2" ]; then
       echo -n -e "\r Netflix$useNICNF: No \n"
-   elif [[ "$result1" == "true" ]] || [[ "$result2" == "true" ]]; then
+   elif [[ "$result1" == "true" ]]; then
       local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{.*"id":"\K\w\w' | head -n 1)
       echo -n -e "\r Netflix$useNICNF: $region1 \n"
+   elif [[ "$result2" == "true" ]]; then
+      local region2=$(echo $tmpresult2 | grep -oP '"requestCountry":{.*"id":"\K\w\w' | head -n 1)
+      echo -n -e "\r Netflix$useNICNF: $region2 \n"
    else
       echo -n -e "\r Netflix$useNICNF: Failed (Network Connection) \n"
    fi
