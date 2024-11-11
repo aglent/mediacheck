@@ -113,8 +113,10 @@ function Test_Google() {
       return
    fi
    local isNotAvailable=$(echo $GG_result | grep 'Premium is not available in your country')
-   local region=$(echo $GG_result | grep "countryCode" | sed 's/.*"countryCode"//' | cut -f2 -d'"')
-   local isAvailable=$(echo $GG_result | egrep '/month|/.month')
+   # local region=$(echo $GG_result | grep "countryCode" | sed 's/.*"countryCode"//' | cut -f2 -d'"')
+   # local isAvailable=$(echo $GG_result | egrep '/month|/.month')
+   local region=$(echo GG_result | grep -woP '"INNERTUBE_CONTEXT_GL"\s{0,}:\s{0,}"\K[^"]+')
+   local isAvailable=$(echo GG_result | grep -i 'ad-free')
    if [ -n "$isNotAvailable" ]; then
       echo -n -e "\r Google$useNICYB: No($region) \n"
       return
