@@ -164,19 +164,19 @@ function Loop() {
          #netflix check
          local tmpresult3=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
          local tmpresult4=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
-         local result3=$(echo $tmpresult1 | grep -oP '"isPlayable":\K(true|false)')
-         local result4=$(echo $tmpresult2 | grep -oP '"isPlayable":\K(true|false)')
+         local result3=$(echo $tmpresult3 | grep -oP '"isPlayable":\K(true|false)')
+         local result4=$(echo $tmpresult4 | grep -oP '"isPlayable":\K(true|false)')
          if [[ "$result3" == "true" ]]; then   #netflix ok
             #netflix country
-            local region1=$(echo $tmpresult1 | grep -oP '"requestCountry":{.*"id":"\K\w\w' | head -n 1)
+            local region3=$(echo $tmpresult3 | grep -oP '"requestCountry":{.*"id":"\K\w\w' | head -n 1)
             echo -n -e "\r 重新获取次数:${i} \n"
-            echo -n -e "\r Netflix$useNICNF: $region1 \n"
+            echo -n -e "\r Netflix$useNICNF: $region3 \n"
             break;
          elif [[ "$result4" == "true" ]]; then   #netflix ok
             #netflix country
-            local region1=$(echo $tmpresult2 | grep -oP '"requestCountry":{.*"id":"\K\w\w' | head -n 1)
+            local region4=$(echo $tmpresult4 | grep -oP '"requestCountry":{.*"id":"\K\w\w' | head -n 1)
             echo -n -e "\r 重新获取次数:${i} \n"
-            echo -n -e "\r Netflix$useNICNF: $region1 \n"
+            echo -n -e "\r Netflix$useNICNF: $region4 \n"
             break;
          elif [[ "$i" == 30 ]];then
             echo -n -e "\r 老子抓不到ip了,躺平吧 \n"
