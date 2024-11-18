@@ -191,6 +191,7 @@ function Loop() {
       elif [[ "$result2" == "true" ]]; then
          local region2=$(echo $tmpresult2 | grep -oP '"requestCountry":{.*"id":"\K\w\w' | head -n 1)
          echo -n -e "\r Netflix$useNICNF: $region2 \n"
+      fi
    fi
 
    #Test_Disney
