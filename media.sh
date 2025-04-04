@@ -35,8 +35,10 @@ fi
 function Test_Netflix() {
    local tmpresult1=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
    local tmpresult2=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
-   local result1=$(echo $tmpresult1 | grep -oP '"isDisplayable":\K(true|false)')  
-   local result2=$(echo $tmpresult2 | grep -oP '"isDisplayable":\K(true|false)')
+   local result1=$(echo $tmpresult1 | grep -oP '"isDisplayable":\K(true|false)' | head -n 1)  
+   local result2=$(echo $tmpresult2 | grep -oP '"isDisplayable":\K(true|false)' | head -n 1)
+   echo -n -e "\r $result1 \n"
+   echo -n -e "\r $result2 \n"
    if [[ "$result1" == "false" ]] && [[ "$result2" == "false" ]]; then
       echo -n -e "\r Netflix$useNICNF: Originals Only \n"
    elif [ -z "$result1" ] && [ -z "$result2" ]; then
@@ -145,8 +147,8 @@ function Loop() {
    #Test_Netflix
    local tmpresult1=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
    local tmpresult2=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
-   local result1=$(echo $tmpresult1 | grep -oP '"isDisplayable":\K(true|false)')
-   local result2=$(echo $tmpresult2 | grep -oP '"isDisplayable":\K(true|false)')
+   local result1=$(echo $tmpresult1 | grep -oP '"isDisplayable":\K(true|false)' | head -n 1)
+   local result2=$(echo $tmpresult2 | grep -oP '"isDisplayable":\K(true|false)' | head -n 1)
    if ! ([[ "$result1" == "true" ]] || [[ "$result2" == "true" ]]); then
       echo -n -e "\r Netflix$useNICNF失效.更新中 \n"
       for ((i=1; i<=30;i++))
@@ -164,8 +166,8 @@ function Loop() {
          #netflix check
          local tmpresult3=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/81280792" 2>&1)
          local tmpresult4=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
-         local result3=$(echo $tmpresult3 | grep -oP '"isDisplayable":\K(true|false)')
-         local result4=$(echo $tmpresult4 | grep -oP '"isDisplayable":\K(true|false)')
+         local result3=$(echo $tmpresult3 | grep -oP '"isDisplayable":\K(true|false)' | head -n 1)
+         local result4=$(echo $tmpresult4 | grep -oP '"isDisplayable":\K(true|false)' | head -n 1)
          if [[ "$result3" == "true" ]]; then   #netflix ok
             #netflix country
             local region3=$(echo $tmpresult3 | grep -oP '"requestCountry":{.*"id":"\K\w\w' | head -n 1)
