@@ -37,8 +37,6 @@ function Test_Netflix() {
    local tmpresult2=$(curl $useNICNF --user-agent "${UA_Browser}" -fsL  --max-time 10 "https://www.netflix.com/title/70143836" 2>&1)
    local result1=$(echo $tmpresult1 | grep -oP '"isDisplayable":\K(true|false)' | head -n 1)  
    local result2=$(echo $tmpresult2 | grep -oP '"isDisplayable":\K(true|false)' | head -n 1)
-   echo -n -e "\r $result1 \n"
-   echo -n -e "\r $result2 \n"
    if [[ "$result1" == "false" ]] && [[ "$result2" == "false" ]]; then
       echo -n -e "\r Netflix$useNICNF: Originals Only \n"
    elif [ -z "$result1" ] && [ -z "$result2" ]; then
